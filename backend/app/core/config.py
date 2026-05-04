@@ -5,7 +5,7 @@ class Settings(BaseSettings):
     SECRET_KEY: str = "your-secret-key"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
-
+    ML_MODEL_PATH: str = "ml_models.pkl"
     model_config = SettingsConfigDict(env_file=".env")
 
 settings = Settings()
