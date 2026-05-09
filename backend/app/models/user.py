@@ -11,6 +11,7 @@ class User(Base):
     second_name = Column(String(50), nullable=False)
     login = Column(String(50), unique=True, nullable=False, index=True)
     password_hash = Column(String(128), nullable=False)  # bcrypt hash
+    email = Column(String(128))
 
     # Связь с задачами
     tasks = relationship("Task", back_populates="owner", lazy="dynamic")

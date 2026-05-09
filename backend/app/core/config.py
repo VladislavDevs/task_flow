@@ -6,6 +6,8 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
     ML_MODEL_PATH: str = "ml_models.pkl"
+    ALGORITHM: str = "HS256"
+
     model_config = SettingsConfigDict(env_file=".env")
 
 settings = Settings()
