@@ -1,14 +1,15 @@
+# backend/app/schemas/task.py
 from pydantic import BaseModel
-
+from typing import Optional
 
 class TaskCreate(BaseModel):
-    pass
+    name: str
+    description: Optional[str] = None
+    category_id: Optional[int] = None
+    initial_assessment_seconds: Optional[int] = None
 
 class TaskUpdate(BaseModel):
-    pass
-
-class TaskOut(BaseModel):
-    pass
-
-class TaskListOut(BaseModel):
-    pass
+    name: Optional[str] = None
+    description: Optional[str] = None
+    category_id: Optional[int] = None
+    initial_assessment_seconds: Optional[int] = None
