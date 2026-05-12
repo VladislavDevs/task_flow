@@ -1,12 +1,16 @@
 from typing import Optional
 from fastapi import APIRouter, Depends, Query, Response, status
+from pydantic import BaseModel
+
 from app.api.v1.dependencies import get_current_user
 from app.schemas.task import TaskCreate, TaskUpdate, TaskOut, TaskListOut
+from app.models.task import TaskStatus  # только для аннотаций в схемах
 
 
 router = APIRouter(prefix="/tasks", tags=["tasks"])
 
 
+# Эндпоинты
 @router.post(
     "/",
     response_model=TaskOut,
@@ -20,8 +24,7 @@ def create_task(
     """
     Создание новой задачи.
 
-    Принимает: title, description, category_id, priority, due_date.
-    Валидация: due_date не в прошлом, priority из enum.
+    Принимает: name, description, category_id, initial_assessment_seconds.
     """
     pass
 
@@ -35,8 +38,9 @@ def get_tasks(
     skip: int = Query(0, ge=0, description="Смещение (offset)"),
     limit: int = Query(10, ge=1, le=100, description="Лимит записей"),
     status_filter: Optional[str] = Query(
-        None, alias="status",
-        description="Фильтр: pending / completed"
+        None,
+        alias="status",
+        description="Фильтр по статусу: open, work, waiting, close, cancelled"
     ),
     category_id: Optional[int] = Query(
         None,
@@ -44,7 +48,7 @@ def get_tasks(
     ),
     sort_by: Optional[str] = Query(
         None,
-        description="Сортировка: priority, due_date, created_at"
+        description="Сортировка: id, status, initial_assessment_seconds"
     ),
     sort_order: Optional[str] = Query(
         "asc",
@@ -59,7 +63,7 @@ def get_tasks(
     Поддерживает:
     - пагинацию (skip / limit)
     - фильтрацию по статусу и категории
-    - сортировку по priority, due_date, created_at
+    - сортировку по id, status, initial_assessment_seconds
     """
     pass
 
@@ -107,13 +111,12 @@ def update_task_status(
     task_id: int,
     new_status: str = Query(
         ...,
-        regex="^(pending|completed)$",
-        description="pending или completed"
+        description="Новый статус: open, work, waiting, close, cancelled"
     ),
     current_user=Depends(get_current_user),
 ):
     """
-    Быстрое изменение статуса: выполнена / не выполнена.
+    Быстрое изменение статуса задачи.
     """
     pass
 
