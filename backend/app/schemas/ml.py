@@ -3,4 +3,4 @@ from pydantic import BaseModel
 class PredictionResponse(BaseModel):
     task_id: int
     predicted_seconds: float
-    unit: str = "seconds"
+    message: str = "Прогноз рассчитан на основе вашей истории задач"

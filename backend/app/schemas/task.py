@@ -1,36 +1,30 @@
-# backend/app/schemas/task.py
-from pydantic import BaseModel
-from typing import Optional
-from app.models.task import TaskStatus
+from pydantic import BaseModel, Field, validator
+from datetime import datetime
+from typing import Optional, List
+from app.schemas.enums import TaskStatus, TaskPriority
 
-class TaskCreate(BaseModel):
-    name: str
+class TaskBase(BaseModel):
+    title: str = Field(..., min_length=1, max_length=150)
     description: Optional[str] = None
     category_id: Optional[int] = None
-    initial_assessment_seconds: Optional[int] = None
+    priority: TaskPriority = TaskPriority.MEDIUM
+    due_date: Optional[datetime] = None
 
+class TaskCreate(TaskBase):
+    @validator('due_date')
+    def validate_date(cls, v):
+        if v and v.replace(tzinfo=None) < datetime.now().replace(tzinfo=None):
+            raise ValueError("Дата не может быть в прошлом")
+        return v
 
-class TaskUpdate(BaseModel):
-    name: Optional[str] = None
-    description: Optional[str] = None
-    category_id: Optional[int] = None
-    initial_assessment_seconds: Optional[int] = None
-
-
-class TaskOut(BaseModel):
+class TaskOut(TaskBase):
     id: int
-    name: str
-    description: Optional[str] = None
     status: TaskStatus
-    initial_assessment_seconds: Optional[int] = None
-    final_assessment_seconds: Optional[int] = None
-    category_id: Optional[int] = None
-    user_id: int
-
+    actual_completion_time: Optional[int] = None
+    
     class Config:
         orm_mode = True
 
-
 class TaskListOut(BaseModel):
     total: int
-    items: list[TaskOut]
+    items: List[TaskOut]
