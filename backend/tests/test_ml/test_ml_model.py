@@ -2,9 +2,9 @@ import pytest
 import numpy as np
 import os
 from unittest.mock import patch
-from backend.app.ml.model import CompletionTimePredictor, MIN_USER_SAMPLES, MIN_GLOBAL_SAMPLES, NULL_CATEGORY_KEY
-from backend.app.models.task import Task, TaskStatus
-from backend.app.core.config import settings
+from app.ml.model import CompletionTimePredictor, MIN_USER_SAMPLES, MIN_GLOBAL_SAMPLES, NULL_CATEGORY_KEY
+from app.models.task import Task, TaskStatus
+from app.core.config import settings
 from backend.tests.conftest import create_closed_task
 
 TEST_ML_MODEL_PATH = "./test_ml_model.pkl"

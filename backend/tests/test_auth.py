@@ -1,4 +1,4 @@
-from backend.app.core.security import create_access_token
+from app.core.security import create_access_token
 
 def test_register_success(client):
     resp = client.post("/api/v1/auth/register", json={

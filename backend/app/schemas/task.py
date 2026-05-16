@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 from datetime import datetime
 from typing import Optional, List
 from app.schemas.enums import TaskStatus, TaskPriority
@@ -11,7 +11,8 @@ class TaskBase(BaseModel):
     due_date: Optional[datetime] = None
 
 class TaskCreate(TaskBase):
-    @validator('due_date')
+    @field_validator("due_date")
+    @classmethod
     def validate_date(cls, v):
         if v and v.replace(tzinfo=None) < datetime.now().replace(tzinfo=None):
             raise ValueError("Дата не может быть в прошлом")
@@ -28,9 +29,8 @@ class TaskOut(TaskBase):
     id: int
     status: TaskStatus
     actual_completion_time: Optional[int] = None
-    
-    class Config:
-        orm_mode = True
+
+    model_config = ConfigDict(from_attributes=True)
 
 class TaskListOut(BaseModel):
     total: int

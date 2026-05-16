@@ -1,20 +1,22 @@
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy import create_engine
+from sqlalchemy.orm import declarative_base, sessionmaker
 from app.core.config import settings
 
-# Асинхронный движок SQLAlchemy для PostgreSQL
-engine = create_async_engine(
-    settings.DATABASE_URL,
+def _sync_database_url(url: str) -> str:
+    return url.replace("postgresql+asyncpg://", "postgresql://", 1)
+
+# Синхронный движок: текущие сервисы и эндпоинты используют db.query/db.commit.
+engine = create_engine(
+    _sync_database_url(settings.DATABASE_URL),
     pool_pre_ping=True,
     pool_size=10,
     max_overflow=20,
     echo=False
 )
 
-# Фабрика асинхронных сессий
-AsyncSessionLocal = sessionmaker(
+# Фабрика синхронных сессий
+SessionLocal = sessionmaker(
     engine,
-    class_=AsyncSession,
     autocommit=False,
     autoflush=False
 )
@@ -23,9 +25,9 @@ AsyncSessionLocal = sessionmaker(
 Base = declarative_base()
 
 # Генератор зависимости FastAPI для получения сессии БД
-async def get_db():
-    async with AsyncSessionLocal() as session:
-        try:
-            yield session
-        finally:
-            await session.close()
+def get_db():
+    session = SessionLocal()
+    try:
+        yield session
+    finally:
+        session.close()

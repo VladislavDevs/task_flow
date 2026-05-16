@@ -1,11 +1,11 @@
-from backend.app.core.database import get_db
+from app.core.database import get_db
 from unittest.mock import patch, MagicMock
 
 def test_get_db():
     """Проверяем, что get_db работает корректно."""
     mock_session = MagicMock()
 
-    with patch('backend.app.core.database.SessionLocal') as mock_SessionLocal:
+    with patch('app.core.database.SessionLocal') as mock_SessionLocal:
         mock_SessionLocal.return_value = mock_session
 
         # Вызываем генератор

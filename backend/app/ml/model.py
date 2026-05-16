@@ -7,8 +7,8 @@ import pandas as pd
 from sklearn.linear_model import LinearRegression
 from sqlalchemy.orm import Session
 
-from backend.app.models.task import Task, TaskStatus
-from backend.app.core.config import settings
+from app.models.task import Task, TaskStatus
+from app.core.config import settings
 
 
 # Минимальное количество записей для обучения модели

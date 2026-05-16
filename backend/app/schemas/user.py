@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, ConfigDict, EmailStr
 from typing import Optional
 from app.schemas.enums import ThemePreference
 
@@ -11,8 +11,7 @@ class UserOut(UserBase):
     id: int
     theme_preference: ThemePreference = ThemePreference.LIGHT
 
+    model_config = ConfigDict(from_attributes=True)
+
 class UserUpdateTheme(BaseModel):
     theme_preference: ThemePreference
-
-class Config:
-        orm_mode = True

@@ -1,10 +1,10 @@
 # tests/test_services/test_task_service.py
 import pytest
-from backend.app.services.task_service import TaskService
-from backend.app.schemas.task import TaskCreate, TaskUpdate
-from backend.app.models.task import Task, TaskStatus
-from backend.app.models.user import User
-from backend.app.models.category import Category
+from app.services.task_service import TaskService
+from app.schemas.task import TaskCreate, TaskUpdate
+from app.models.task import Task, TaskStatus
+from app.models.user import User
+from app.models.category import Category
 
 
 class TestTaskService:
@@ -199,7 +199,7 @@ class TestTaskService:
 
     def test_close_task_calls_retrain(self, db_session, monkeypatch):
         # mock-вызов retrain_for_user, чтобы не зависеть от ml модели
-        from backend.app.services import prediction_service
+        from app.services import prediction_service
         retrain_called = False
 
         def mock_retrain(user_id, db):

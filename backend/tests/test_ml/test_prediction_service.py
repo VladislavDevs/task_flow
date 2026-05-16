@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import patch, MagicMock
-from backend.app.services.prediction_service import PredictionService
-from backend.app.models.task import Task, TaskStatus
+from app.services.prediction_service import PredictionService
+from app.models.task import Task, TaskStatus
 
 class TestPredictionService:
 
@@ -40,13 +40,13 @@ class TestPredictionService:
         with pytest.raises(ValueError, match="Task not found"):
             PredictionService.get_prediction(task.id, 1, db_session)
 
-    @patch('backend.app.services.prediction_service.predictor')
+    @patch('app.services.prediction_service.predictor')
     def test_retrain_for_user_calls_partial_train(self, mock_predictor, db_session):
         """retrain_for_user делегирует вызов predictor.partial_train_user."""
         PredictionService.retrain_for_user(42, db_session)
         mock_predictor.partial_train_user.assert_called_once_with(42, db_session)
 
-    @patch('backend.app.services.prediction_service.predictor')
+    @patch('app.services.prediction_service.predictor')
     def test_retrain_global_calls_partial_train_global(self, mock_predictor, db_session):
         """retrain_global делегирует вызов predictor.partial_train_global."""
         PredictionService.retrain_global(db_session)
