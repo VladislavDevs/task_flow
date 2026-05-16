@@ -1,24 +1,7 @@
 ## Архитектура проекта
 [Описание: бэкенд на Python + БД, запуск через Docker, слои: API → сервисы → репозитории]
 
-├───alembic
-│   └───versions
-├───app
-│   ├───api
-│   │   └───v1
-│   │       └───endpoints
-│   ├───core
-│   ├───ml
-│   ├───models
-│   ├───schemas
-│   ├───services
-│   └───utils
-└───tests
-    ├───test_api
-    ├───test_core
-    ├───test_ml
-    ├───test_services
-    └───test_utils
+![](./pics/tree.png)
 
 ---
 
