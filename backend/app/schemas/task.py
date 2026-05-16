@@ -4,7 +4,7 @@ from typing import Optional, List
 from app.schemas.enums import TaskStatus, TaskPriority
 
 class TaskBase(BaseModel):
-    title: str = Field(..., min_length=1, max_length=150)
+    name: str = Field(..., min_length=1, max_length=150)
     description: Optional[str] = None
     category_id: Optional[int] = None
     priority: TaskPriority = TaskPriority.MEDIUM
