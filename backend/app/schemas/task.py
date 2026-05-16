@@ -16,6 +16,13 @@ class TaskCreate(TaskBase):
         if v and v.replace(tzinfo=None) < datetime.now().replace(tzinfo=None):
             raise ValueError("Дата не может быть в прошлом")
         return v
+    
+class TaskUpdate(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    category_id: Optional[int] = None
+    priority: Optional[TaskPriority] = None
+    due_date: Optional[datetime] = None
 
 class TaskOut(TaskBase):
     id: int

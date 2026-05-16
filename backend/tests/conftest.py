@@ -2,13 +2,13 @@ import pytest
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from backend.app.core.database import Base, get_db
-from backend.main import app
+from app.core.database import Base, get_db
+from main import app
 from fastapi.testclient import TestClient
-from backend.app.models.user import User
-from backend.app.models.category import Category
-from backend.app.models.task import Task, TaskStatus
-from backend.app.core.config import settings
+from app.models.user import User
+from app.models.category import Category
+from app.models.task import Task, TaskStatus
+from app.core.config import settings
 
 TEST_ML_MODEL_PATH = "./test_ml_model.pkl"
 
