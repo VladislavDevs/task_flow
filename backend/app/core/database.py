@@ -1,36 +1,31 @@
-from sqlalchemy import create_engine
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker, declarative_base
+from app.core.config import settings
 
-from backend.app.core.config import settings
-
-# Движок SQLAlchemy для PostgreSQL
-engine = create_engine(
+# Асинхронный движок SQLAlchemy для PostgreSQL
+engine = create_async_engine(
     settings.DATABASE_URL,
-    pool_pre_ping=True,      # проверять соединение перед использованием
-    pool_size=10,            # базовый размер пула
-    max_overflow=20,         # дополнительные соединения при превышении pool_size
-    echo=False               # установите True для отладки SQL-запросов
+    pool_pre_ping=True,
+    pool_size=10,
+    max_overflow=20,
+    echo=False
 )
 
-# Фабрика сессий, привязанная к движку
-SessionLocal = sessionmaker(
+# Фабрика асинхронных сессий
+AsyncSessionLocal = sessionmaker(
+    engine,
+    class_=AsyncSession,
     autocommit=False,
-    autoflush=False,
-    bind=engine
+    autoflush=False
 )
 
-# Базовый класс для декларативных моделей SQLAlchemy
-# Все модели ORM будут наследоваться от него
+# Базовый класс для моделей
 Base = declarative_base()
 
 # Генератор зависимости FastAPI для получения сессии БД
-def get_db():
-    """
-    Создаёт сессию, выполняет запрос и гарантированно закрывает её.
-    Используется как зависимость в эндпоинтах FastAPI.
-    """
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+async def get_db():
+    async with AsyncSessionLocal() as session:
+        try:
+            yield session
+        finally:
+            await session.close()
