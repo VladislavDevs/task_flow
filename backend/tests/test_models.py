@@ -1,8 +1,8 @@
 import pytest
 from sqlalchemy.exc import IntegrityError
-from backend.app.models.user import User
-from backend.app.models.category import Category
-from backend.app.models.task import Task, TaskStatus
+from app.models.user import User
+from app.models.category import Category
+from app.models.task import Task, TaskStatus
 
 class TestUser:
     def test_create_and_retrieve(self, db_session):

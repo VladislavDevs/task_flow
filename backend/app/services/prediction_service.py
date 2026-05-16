@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from backend.app.models.task import Task
-from backend.app.ml.model import predictor
+from app.models.task import Task
+from app.ml.model import predictor
 
 class PredictionService:
     @staticmethod

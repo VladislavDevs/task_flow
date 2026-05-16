@@ -2,13 +2,13 @@ from datetime import datetime, timezone
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from jose import JWTError, jwt
-from backend.app.core.config import settings
-from backend.app.core.database import get_db
-from backend.app.core.security import create_access_token, create_refresh_token, get_password_hash, verify_password
-from backend.app.services.auth_service import get_user_by_email, authenticate_user, get_user_by_id
-from backend.app.schemas.auth import UserCreate, UserLogin, Token, TokenRefresh, PasswordChange, UserOut
-from backend.app.api.v1.dependencies import get_current_user
-from backend.app.models.user import User
+from app.core.config import settings
+from app.core.database import get_db
+from app.core.security import create_access_token, create_refresh_token, get_password_hash, verify_password
+from app.services.auth_service import get_user_by_email, authenticate_user, get_user_by_id
+from app.schemas.auth import UserCreate, UserLogin, Token, TokenRefresh, PasswordChange, UserOut
+from app.api.v1.dependencies import get_current_user
+from app.models.user import User
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -17,7 +17,13 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
     if get_user_by_email(db, user.email.__str__()):
         raise HTTPException(status_code=400, detail="Email already registered")
     hashed = get_password_hash(user.password)
-    db_user = User(email=user.email, hashed_password=hashed)
+    db_user = User(
+        email=str(user.email),
+        first_name=user.first_name or "",
+        second_name=user.last_name or "",
+        login=str(user.email),
+        password_hash=hashed,
+    )
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -73,11 +79,11 @@ def change_password(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    if not verify_password(password_data.old_password, current_user.hashed_password):
+    if not verify_password(password_data.old_password, current_user.password_hash):
         raise HTTPException(status_code=400, detail="Incorrect old password")
     if password_data.old_password == password_data.new_password:
         raise HTTPException(status_code=400, detail="New password must be different from old password")
-    current_user.hashed_password = get_password_hash(password_data.new_password)
+    current_user.password_hash = get_password_hash(password_data.new_password)
     current_user.password_updated_at = datetime.now(timezone.utc)
     db.commit()
     return {"detail": "Password updated successfully"}

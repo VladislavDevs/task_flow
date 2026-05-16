@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
-from backend.app.models.task import Task, TaskStatus
-from backend.app.models.category import Category
-from backend.app.schemas.task import TaskCreate, TaskUpdate
+from app.models.task import Task, TaskStatus
+from app.models.category import Category
+from app.schemas.task import TaskCreate, TaskUpdate
 
 
 class TaskService:
@@ -107,7 +107,7 @@ class TaskService:
         db.refresh(task)
 
         # Переобучаем персональные модели пользователя
-        from backend.app.services.prediction_service import PredictionService
+        from app.services.prediction_service import PredictionService
         PredictionService.retrain_for_user(user_id, db)
 
         return task
