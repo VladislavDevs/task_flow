@@ -1,7 +1,9 @@
 from fastapi import FastAPI
+from app.api.v1.endpoints.tasks import router as tasks_router
 
 app = FastAPI()
 
+app.include_router(tasks_router, prefix="/api/v1")
 
 @app.get("/")
 async def root():
@@ -11,4 +13,3 @@ async def root():
 @app.get("/hello/{name}")
 async def say_hello(name: str):
     return {"message": f"Hello {name}"}
-

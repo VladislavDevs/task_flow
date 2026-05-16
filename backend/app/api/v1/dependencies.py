@@ -2,10 +2,10 @@ from datetime import datetime, timezone
 from jose import JWTError, jwt
 from fastapi import Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from backend.app.core.config import settings
-from backend.app.core.database import get_db
-from backend.app.core.security import oauth2_scheme
-from backend.app.models.user import User
+from app.core.config import settings
+from app.core.database import get_db
+from app.core.security import oauth2_scheme
+from app.models.user import User
 
 async def get_current_user(
     token: str = Depends(oauth2_scheme),

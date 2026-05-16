@@ -3,7 +3,7 @@ import enum
 from sqlalchemy import Column, Integer, String, Text, Enum, ForeignKey
 from sqlalchemy.orm import relationship
 
-from backend.app.core.database import Base
+from app.core.database import Base
 
 class TaskStatus(str, enum.Enum):
     OPEN = "open"

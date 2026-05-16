@@ -4,7 +4,7 @@ from typing import Optional, List
 from app.schemas.enums import TaskStatus, TaskPriority
 
 class TaskBase(BaseModel):
-    title: str = Field(..., min_length=1, max_length=150)
+    name: str = Field(..., min_length=1, max_length=150)
     description: Optional[str] = None
     category_id: Optional[int] = None
     priority: TaskPriority = TaskPriority.MEDIUM
@@ -16,6 +16,13 @@ class TaskCreate(TaskBase):
         if v and v.replace(tzinfo=None) < datetime.now().replace(tzinfo=None):
             raise ValueError("Дата не может быть в прошлом")
         return v
+    
+class TaskUpdate(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    category_id: Optional[int] = None
+    priority: Optional[TaskPriority] = None
+    due_date: Optional[datetime] = None
 
 class TaskOut(TaskBase):
     id: int
