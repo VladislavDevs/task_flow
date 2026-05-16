@@ -284,7 +284,7 @@ git checkout main
 git checkout -b bugfix/fix-null-pointer
 ```
 
-**Плохо** [🔴]
+**Плохо** [🔴]  
 ```bash
 git checkout -b new
 ```
@@ -385,7 +385,7 @@ git push origin feature/add-login
 В описании `PR` указать, что сделано и зачем.
 Привязать issue: `Closes #42`.
 
-**Плохо** [🔴]
+**Плохо** [🔴]   
 Пустой PR без описания.
 
 
@@ -414,7 +414,7 @@ test
 **Коммиты:**  
 Правило: повелительное наклонение, не длиннее 50 символов (для заголовка).
 
-**Хорошо** [🟢] 
+**Хорошо** [🟢]  
 ```text
 Add validation for email field
 Remove deprecated API call
